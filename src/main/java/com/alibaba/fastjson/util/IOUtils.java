@@ -19,6 +19,7 @@ import java.io.Closeable;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
 
@@ -28,6 +29,8 @@ import com.alibaba.fastjson.JSONException;
  * @author wenshao<szujobs@hotmail.com>
  */
 public class IOUtils {
+
+    public static final Charset CHAR_SET_UTF8 = Charset.forName("UTF-8");
 
     public static void close(Closeable x) {
         if (x != null) {

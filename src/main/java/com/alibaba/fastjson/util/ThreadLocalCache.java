@@ -9,15 +9,8 @@ public class ThreadLocalCache {
     public final static int                                 CHARS_CACH_MAX_SIZE  = 1024 * 128;                              // 1k;
     private final static ThreadLocal<SoftReference<char[]>> charsBufLocal        = new ThreadLocal<SoftReference<char[]>>();
 
-    private final static ThreadLocal<CharsetDecoder>        decoderLocal         = new ThreadLocal<CharsetDecoder>();
-
     public static CharsetDecoder getUTF8Decoder() {
-        CharsetDecoder decoder = decoderLocal.get();
-        if (decoder == null) {
-            decoder = new UTF8Decoder();
-            decoderLocal.set(decoder);
-        }
-        return decoder;
+        return IOUtils.CHAR_SET_UTF8.newDecoder();
     }
 
     public static void clearChars() {
