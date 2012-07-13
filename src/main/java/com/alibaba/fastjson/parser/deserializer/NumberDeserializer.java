@@ -15,7 +15,14 @@ public class NumberDeserializer implements ObjectDeserializer {
     @SuppressWarnings("unchecked")
     public <T> T deserialze(DefaultJSONParser parser, Type clazz, Object fieldName) {
         final JSONLexer lexer = parser.getLexer();
+        
         if (lexer.token() == JSONToken.LITERAL_INT) {
+            if (clazz == double.class || clazz  == Double.class) {
+                String val = lexer.numberString();
+                lexer.nextToken(JSONToken.COMMA);
+                return (T) Double.valueOf(Double.parseDouble(val));
+            }
+            
             long val = lexer.longValue();
             lexer.nextToken(JSONToken.COMMA);
             

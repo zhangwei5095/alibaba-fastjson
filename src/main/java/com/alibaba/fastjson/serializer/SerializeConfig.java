@@ -16,8 +16,6 @@
 package com.alibaba.fastjson.serializer;
 
 import java.io.File;
-import java.io.Serializable;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -40,10 +38,6 @@ import java.util.concurrent.atomic.AtomicLongArray;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.annotation.JSONType;
-import com.alibaba.fastjson.util.ASMClassLoader;
-import com.alibaba.fastjson.util.ASMUtils;
 import com.alibaba.fastjson.util.IdentityHashMap;
 
 /**
@@ -55,40 +49,9 @@ public class SerializeConfig extends IdentityHashMap<Type, ObjectSerializer> {
 
     private final static SerializeConfig globalInstance = new SerializeConfig();
 
-    private boolean                      asm            = !ASMUtils.isAndroid();      ;
-
-    private final ASMSerializerFactory   asmFactory     = new ASMSerializerFactory();
-
-    public final ObjectSerializer createASMSerializer(Class<?> clazz) throws Exception {
-        return asmFactory.createJavaBeanSerializer(clazz);
-    }
+    private boolean                      asm            = false;
 
     public ObjectSerializer createJavaBeanSerializer(Class<?> clazz) {
-        if (!Modifier.isPublic(clazz.getModifiers())) {
-            return new JavaBeanSerializer(clazz);
-        }
-
-        boolean asm = this.asm;
-
-        if (asm && ASMClassLoader.isExternalClass(clazz) || clazz == Serializable.class || clazz == Object.class) {
-            asm = false;
-        }
-
-        {
-            JSONType annotation = clazz.getAnnotation(JSONType.class);
-            if (annotation != null && annotation.asm() == false) {
-                asm = false;
-            }
-        }
-
-        if (asm) {
-            try {
-                return createASMSerializer(clazz);
-            } catch (Throwable e) {
-                throw new JSONException("create asm serializer error, class " + clazz, e);
-            }
-        }
-
         return new JavaBeanSerializer(clazz);
     }
 

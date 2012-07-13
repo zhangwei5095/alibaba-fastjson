@@ -19,7 +19,6 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -53,11 +52,7 @@ import java.util.concurrent.atomic.AtomicLongArray;
 import java.util.regex.Pattern;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.asm.ASMException;
-import com.alibaba.fastjson.parser.deserializer.ASMDeserializerFactory;
-import com.alibaba.fastjson.parser.deserializer.ASMJavaBeanDeserializer;
 import com.alibaba.fastjson.parser.deserializer.ArrayDeserializer;
 import com.alibaba.fastjson.parser.deserializer.ArrayListStringDeserializer;
 import com.alibaba.fastjson.parser.deserializer.ArrayListStringFieldDeserializer;
@@ -110,9 +105,7 @@ import com.alibaba.fastjson.parser.deserializer.TimestampDeserializer;
 import com.alibaba.fastjson.parser.deserializer.URIDeserializer;
 import com.alibaba.fastjson.parser.deserializer.URLDeserializer;
 import com.alibaba.fastjson.parser.deserializer.UUIDDeserializer;
-import com.alibaba.fastjson.util.ASMClassLoader;
 import com.alibaba.fastjson.util.ASMUtils;
-import com.alibaba.fastjson.util.DeserializeBeanInfo;
 import com.alibaba.fastjson.util.FieldInfo;
 import com.alibaba.fastjson.util.IdentityHashMap;
 import com.alibaba.fastjson.util.ServiceLoader;
@@ -236,7 +229,7 @@ public class ParserConfig {
         derializers.put(AtomicIntegerArray.class, AtomicIntegerArrayDeserializer.instance);
         derializers.put(AtomicLongArray.class, AtomicLongArrayDeserializer.instance);
         derializers.put(StackTraceElement.class, StackTraceElementDeserializer.instance);
-        
+
         derializers.put(Serializable.class, defaultSerializer);
         derializers.put(Cloneable.class, defaultSerializer);
         derializers.put(Comparable.class, defaultSerializer);
@@ -282,12 +275,12 @@ public class ParserConfig {
         if (derializer != null) {
             return derializer;
         }
-        
+
         derializer = derializers.get(clazz);
         if (derializer != null) {
             return derializer;
         }
-        
+
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         for (AutowiredObjectDeserializer autowired : ServiceLoader.load(AutowiredObjectDeserializer.class, classLoader)) {
             for (Type forType : autowired.getAutowiredFor()) {
@@ -304,7 +297,8 @@ public class ParserConfig {
             derializer = new EnumDeserializer(clazz);
         } else if (clazz.isArray()) {
             return ArrayDeserializer.instance;
-        } else if (clazz == Set.class || clazz == HashSet.class || clazz == Collection.class || clazz == List.class || clazz == ArrayList.class) {
+        } else if (clazz == Set.class || clazz == HashSet.class || clazz == Collection.class || clazz == List.class
+                   || clazz == ArrayList.class) {
             if (type instanceof ParameterizedType) {
                 Type itemType = ((ParameterizedType) type).getActualTypeArguments()[0];
                 if (itemType == String.class) {
@@ -335,79 +329,10 @@ public class ParserConfig {
             return this.defaultSerializer;
         }
 
-        boolean asmEnable = this.asmEnable;
-        if (asmEnable && !Modifier.isPublic(clazz.getModifiers())) {
-            asmEnable = false;
-        }
-        
-        if (clazz.getTypeParameters().length != 0) {
-            asmEnable = false;
-        }
-        
-        if (ASMClassLoader.isExternalClass(clazz)) {
-            asmEnable = false;
-        }
-        
-        if (asmEnable) {
-            DeserializeBeanInfo beanInfo = DeserializeBeanInfo.computeSetters(clazz);
-            for (FieldInfo fieldInfo : beanInfo.getFieldList()) {
-                Class<?> fieldClass = fieldInfo.getFieldClass();
-                if (!Modifier.isPublic(fieldClass.getModifiers())) {
-                    asmEnable = false;
-                    break;
-                }
-                
-                if (fieldClass.isMemberClass() && !Modifier.isStatic(fieldClass.getModifiers())) {
-                    asmEnable = false;
-                }
-            }
-        }
-        
-        if (asmEnable) {
-            if (clazz.isMemberClass() && !Modifier.isStatic(clazz.getModifiers())) {
-                asmEnable = false;
-            }
-        }
-
-        if (!asmEnable) {
-            return new JavaBeanDeserializer(this, clazz);
-        }
-
-        try {
-            return ASMDeserializerFactory.getInstance().createJavaBeanDeserializer(this, clazz);
-        } catch (ASMException asmError) {
-        	return new JavaBeanDeserializer(this, clazz);
-        } catch (Exception e) {
-            throw new JSONException("create asm deserializer error, " + clazz.getName(), e);
-        }
+        return new JavaBeanDeserializer(this, clazz);
     }
 
     public FieldDeserializer createFieldDeserializer(ParserConfig mapping, Class<?> clazz, FieldInfo fieldInfo) {
-        boolean asmEnable = this.asmEnable;
-
-        if (!Modifier.isPublic(clazz.getModifiers())) {
-            asmEnable = false;
-        }
-
-        if (fieldInfo.getFieldClass() == Class.class) {
-            asmEnable = false;
-        }
-        
-        if (ASMClassLoader.isExternalClass(clazz)) {
-            asmEnable = false;
-        }
-
-        if (!asmEnable) {
-            return createFieldDeserializerWithoutASM(mapping, clazz, fieldInfo);
-        }
-
-        try {
-            return ASMDeserializerFactory.getInstance().createFieldDeserializer(mapping, clazz, fieldInfo);
-        } catch (Throwable e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
         return createFieldDeserializerWithoutASM(mapping, clazz, fieldInfo);
     }
 
@@ -470,8 +395,6 @@ public class ParserConfig {
 
         if (deserizer instanceof JavaBeanDeserializer) {
             return ((JavaBeanDeserializer) deserizer).getFieldDeserializerMap();
-        } else if (deserizer instanceof ASMJavaBeanDeserializer) {
-            return ((ASMJavaBeanDeserializer) deserizer).getInnterSerializer().getFieldDeserializerMap();
         } else {
             return Collections.emptyMap();
         }
