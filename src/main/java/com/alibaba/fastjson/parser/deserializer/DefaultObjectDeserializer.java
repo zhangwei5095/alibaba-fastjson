@@ -28,7 +28,6 @@ import com.alibaba.fastjson.parser.JSONLexer;
 import com.alibaba.fastjson.parser.JSONScanner;
 import com.alibaba.fastjson.parser.JSONToken;
 import com.alibaba.fastjson.parser.ParseContext;
-import com.alibaba.fastjson.util.ASMClassLoader;
 import com.alibaba.fastjson.util.TypeUtils;
 
 public class DefaultObjectDeserializer implements ObjectDeserializer {
@@ -461,7 +460,11 @@ public class DefaultObjectDeserializer implements ObjectDeserializer {
             }
 
             if (classValue instanceof String) {
-                return (T) ASMClassLoader.forName((String) classValue);
+                try {
+                    return (T) Thread.currentThread().getContextClassLoader().loadClass((String) classValue);
+                } catch (ClassNotFoundException e) {
+                    throw new JSONException(e.getMessage(), e);
+                }
             }
         } else if (clazz == Serializable.class) {
             return (T) parser.parse();

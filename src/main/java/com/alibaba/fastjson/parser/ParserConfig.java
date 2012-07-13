@@ -105,7 +105,6 @@ import com.alibaba.fastjson.parser.deserializer.TimestampDeserializer;
 import com.alibaba.fastjson.parser.deserializer.URIDeserializer;
 import com.alibaba.fastjson.parser.deserializer.URLDeserializer;
 import com.alibaba.fastjson.parser.deserializer.UUIDDeserializer;
-import com.alibaba.fastjson.util.ASMUtils;
 import com.alibaba.fastjson.util.FieldInfo;
 import com.alibaba.fastjson.util.IdentityHashMap;
 import com.alibaba.fastjson.util.ServiceLoader;
@@ -127,7 +126,7 @@ public class ParserConfig {
 
     private DefaultObjectDeserializer                       defaultSerializer = new DefaultObjectDeserializer();
 
-    private boolean                                         asmEnable         = !ASMUtils.isAndroid();
+    private boolean                                         asmEnable         = false;
 
     protected final SymbolTable                             symbolTable       = new SymbolTable();
 

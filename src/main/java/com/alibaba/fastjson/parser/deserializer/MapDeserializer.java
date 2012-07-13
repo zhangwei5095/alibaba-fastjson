@@ -18,7 +18,6 @@ import com.alibaba.fastjson.parser.DefaultJSONParser;
 import com.alibaba.fastjson.parser.JSONLexer;
 import com.alibaba.fastjson.parser.JSONToken;
 import com.alibaba.fastjson.parser.ParseContext;
-import com.alibaba.fastjson.util.AntiCollisionHashMap;
 
 public class MapDeserializer implements ObjectDeserializer {
 
@@ -58,7 +57,8 @@ public class MapDeserializer implements ObjectDeserializer {
             Type valueType = parameterizedType.getActualTypeArguments()[1];
 
             if (String.class == keyType) {
-                return DefaultObjectDeserializer.instance.parseMap(parser, (Map<String, Object>) map, valueType, fieldName);
+                return DefaultObjectDeserializer.instance.parseMap(parser, (Map<String, Object>) map, valueType,
+                                                                   fieldName);
             } else {
                 return DefaultObjectDeserializer.instance.parseMap(parser, map, keyType, valueType, fieldName);
             }
@@ -88,13 +88,9 @@ public class MapDeserializer implements ObjectDeserializer {
         if (type == ConcurrentMap.class || type == ConcurrentHashMap.class) {
             return new ConcurrentHashMap();
         }
-        
-        if (type == Map.class ) {
-            return new AntiCollisionHashMap();
-        }
-        
-        if(type == HashMap.class){ //
-        	return new HashMap();
+
+        if (type == Map.class || type == HashMap.class) { //
+            return new HashMap();
         }
 
         if (type == LinkedHashMap.class) {
@@ -112,14 +108,14 @@ public class MapDeserializer implements ObjectDeserializer {
             if (clazz.isInterface()) {
                 throw new JSONException("unsupport type " + type);
             }
-            
+
             try {
                 return (Map<Object, Object>) clazz.newInstance();
             } catch (Exception e) {
                 throw new JSONException("unsupport type " + type, e);
             }
         }
-        
+
         throw new JSONException("unsupport type " + type);
     }
 

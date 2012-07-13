@@ -16,13 +16,13 @@ import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.DefaultExtJSONParser;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.parser.deserializer.DefaultObjectDeserializer;
-import com.alibaba.fastjson.util.AntiCollisionHashMap;
 
 public class DefaultObjectDeserializerTest2 extends TestCase {
 
     public void test_0() throws Exception {
         String input = "{'map':{}}";
-        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(), JSON.DEFAULT_PARSER_FEATURE);
+        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(),
+                                                               JSON.DEFAULT_PARSER_FEATURE);
 
         DefaultObjectDeserializer deser = new DefaultObjectDeserializer();
 
@@ -34,8 +34,8 @@ public class DefaultObjectDeserializerTest2 extends TestCase {
 
     public void test_1() throws Exception {
         String input = "{'map':{}}";
-        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(), JSON.DEFAULT_PARSER_FEATURE);
-
+        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(),
+                                                               JSON.DEFAULT_PARSER_FEATURE);
 
         SortedMap<String, SortedMap> map = JSON.parseObject(input, new TypeReference<SortedMap<String, SortedMap>>() {
         }.getType());
@@ -43,33 +43,24 @@ public class DefaultObjectDeserializerTest2 extends TestCase {
         Assert.assertEquals(TreeMap.class, map.get("map").getClass());
     }
 
-    public void test_2() throws Exception {
-        String input = "{'map':{}}";
-        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(), JSON.DEFAULT_PARSER_FEATURE);
-
-        DefaultObjectDeserializer deser = new DefaultObjectDeserializer();
-
-        SortedMap<String, Map> map = JSON.parseObject(input, new TypeReference<SortedMap<String, Map>>() {
-        }.getType());
-
-        Assert.assertEquals(AntiCollisionHashMap.class, map.get("map").getClass());
-    }
-
     public void test_3() throws Exception {
         String input = "{'map':{}}";
-        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(), JSON.DEFAULT_PARSER_FEATURE);
+        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(),
+                                                               JSON.DEFAULT_PARSER_FEATURE);
 
         DefaultObjectDeserializer deser = new DefaultObjectDeserializer();
 
-        SortedMap<String, ConcurrentMap> map = JSON.parseObject(input, new TypeReference<SortedMap<String, ConcurrentMap>>() {
-        }.getType());
+        SortedMap<String, ConcurrentMap> map = JSON.parseObject(input,
+                                                                new TypeReference<SortedMap<String, ConcurrentMap>>() {
+                                                                }.getType());
 
         Assert.assertEquals(ConcurrentHashMap.class, map.get("map").getClass());
     }
 
     public void test_4() throws Exception {
         String input = "{'map':{}}";
-        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(), JSON.DEFAULT_PARSER_FEATURE);
+        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(),
+                                                               JSON.DEFAULT_PARSER_FEATURE);
 
         DefaultObjectDeserializer deser = new DefaultObjectDeserializer();
 
@@ -81,7 +72,8 @@ public class DefaultObjectDeserializerTest2 extends TestCase {
 
     public void test_5() throws Exception {
         String input = "{'map':{}}";
-        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(), JSON.DEFAULT_PARSER_FEATURE);
+        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(),
+                                                               JSON.DEFAULT_PARSER_FEATURE);
 
         DefaultObjectDeserializer deser = new DefaultObjectDeserializer();
 
@@ -93,7 +85,8 @@ public class DefaultObjectDeserializerTest2 extends TestCase {
 
     public void test_6() throws Exception {
         String input = "{'map':{}}";
-        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(), JSON.DEFAULT_PARSER_FEATURE);
+        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(),
+                                                               JSON.DEFAULT_PARSER_FEATURE);
 
         DefaultObjectDeserializer deser = new DefaultObjectDeserializer();
 
@@ -105,7 +98,8 @@ public class DefaultObjectDeserializerTest2 extends TestCase {
 
     public void test_7() throws Exception {
         String input = "{'map':{}}";
-        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(), JSON.DEFAULT_PARSER_FEATURE);
+        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(),
+                                                               JSON.DEFAULT_PARSER_FEATURE);
 
         DefaultObjectDeserializer deser = new DefaultObjectDeserializer();
 
@@ -118,15 +112,17 @@ public class DefaultObjectDeserializerTest2 extends TestCase {
     public void test_8() throws Exception {
         String input = "{'map':{}}";
 
-        ConcurrentMap<String, HashMap> map = JSON.parseObject(input, new TypeReference<ConcurrentMap<String, HashMap>>() {
-        }.getType());
+        ConcurrentMap<String, HashMap> map = JSON.parseObject(input,
+                                                              new TypeReference<ConcurrentMap<String, HashMap>>() {
+                                                              }.getType());
 
         Assert.assertEquals(HashMap.class, map.get("map").getClass());
     }
 
     public void test_error() throws Exception {
         String input = "{'map':{}}";
-        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(), JSON.DEFAULT_PARSER_FEATURE);
+        DefaultExtJSONParser parser = new DefaultExtJSONParser(input, ParserConfig.getGlobalInstance(),
+                                                               JSON.DEFAULT_PARSER_FEATURE);
 
         DefaultObjectDeserializer deser = new DefaultObjectDeserializer();
 
@@ -144,7 +140,7 @@ public class DefaultObjectDeserializerTest2 extends TestCase {
     public static interface Map1<K, V> extends Map<K, V> {
 
     }
-    
+
     public static class Map2<K, V> extends HashMap<K, V> {
 
     }

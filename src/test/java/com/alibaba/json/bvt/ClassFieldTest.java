@@ -5,7 +5,6 @@ import junit.framework.TestCase;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.util.ASMClassLoader;
 
 public class ClassFieldTest extends TestCase {
 
@@ -30,15 +29,6 @@ public class ClassFieldTest extends TestCase {
         Assert.assertNotNull(error);
     }
 
-    public void test_null() throws Exception {
-        Exception error = null;
-        try {
-            ASMClassLoader.forName(null);
-        } catch (Exception ex) {
-            error = ex;
-        }
-        Assert.assertNotNull(error);
-    }
 
     public static class User {
 
