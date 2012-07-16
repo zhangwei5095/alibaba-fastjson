@@ -429,7 +429,7 @@ public class JSONSerializer {
             } else if (Appendable.class.isAssignableFrom(clazz)) {
                 config.put(clazz, AppendableSerializer.instance);
             } else if (Charset.class.isAssignableFrom(clazz)) {
-                config.put(clazz, CharsetSerializer.instance);
+                config.put(clazz, ToStringSerializer.instance);
             } else if (Enumeration.class.isAssignableFrom(clazz)) {
                 config.put(clazz, EnumerationSeriliazer.instance);
             } else if (Calendar.class.isAssignableFrom(clazz)) {
