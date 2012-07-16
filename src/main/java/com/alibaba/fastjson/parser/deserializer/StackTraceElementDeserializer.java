@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.parser.DefaultJSONParser;
 import com.alibaba.fastjson.parser.Feature;
-import com.alibaba.fastjson.parser.JSONLexer;
+import com.alibaba.fastjson.parser.JSONScanner;
 import com.alibaba.fastjson.parser.JSONToken;
 
 public class StackTraceElementDeserializer implements ObjectDeserializer {
@@ -14,7 +14,7 @@ public class StackTraceElementDeserializer implements ObjectDeserializer {
 
     @SuppressWarnings("unchecked")
     public <T> T deserialze(DefaultJSONParser parser, Type type, Object fieldName) {
-        JSONLexer lexer = parser.getLexer();
+        JSONScanner lexer = parser.getLexer();
         if (lexer.token() == JSONToken.NULL) {
             lexer.nextToken();
             return null;

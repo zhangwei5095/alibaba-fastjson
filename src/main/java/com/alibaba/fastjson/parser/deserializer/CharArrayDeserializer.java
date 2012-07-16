@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.DefaultJSONParser;
-import com.alibaba.fastjson.parser.JSONLexer;
+import com.alibaba.fastjson.parser.JSONScanner;
 import com.alibaba.fastjson.parser.JSONToken;
 
 public class CharArrayDeserializer implements ObjectDeserializer {
@@ -18,7 +18,7 @@ public class CharArrayDeserializer implements ObjectDeserializer {
     
     @SuppressWarnings("unchecked")
     public static <T> T deserialze(DefaultJSONParser parser) {
-        final JSONLexer lexer = parser.getLexer();
+        final JSONScanner lexer = parser.getLexer();
         if (lexer.token() == JSONToken.LITERAL_STRING) {
             String val = lexer.stringVal();
             lexer.nextToken(JSONToken.COMMA);

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.alibaba.fastjson.parser.DefaultJSONParser;
-import com.alibaba.fastjson.parser.JSONLexer;
+import com.alibaba.fastjson.parser.JSONScanner;
 import com.alibaba.fastjson.parser.JSONToken;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.util.FieldInfo;
@@ -25,7 +25,7 @@ public class ArrayListStringFieldDeserializer extends FieldDeserializer {
     public void parseField(DefaultJSONParser parser, Object object, Type objectType, Map<String, Object> fieldValues) {
         ArrayList<Object> list;
 
-        final JSONLexer lexer = parser.getLexer();
+        final JSONScanner lexer = parser.getLexer();
         if (lexer.token() == JSONToken.NULL) {
             lexer.nextToken(JSONToken.COMMA);
             list = null;

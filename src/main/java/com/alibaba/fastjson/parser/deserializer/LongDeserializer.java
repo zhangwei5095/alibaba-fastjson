@@ -3,7 +3,7 @@ package com.alibaba.fastjson.parser.deserializer;
 import java.lang.reflect.Type;
 
 import com.alibaba.fastjson.parser.DefaultJSONParser;
-import com.alibaba.fastjson.parser.JSONLexer;
+import com.alibaba.fastjson.parser.JSONScanner;
 import com.alibaba.fastjson.parser.JSONToken;
 import com.alibaba.fastjson.util.TypeUtils;
 
@@ -18,7 +18,7 @@ public class LongDeserializer implements ObjectDeserializer {
 
     @SuppressWarnings("unchecked")
     public static <T> T deserialze(DefaultJSONParser parser) {
-        final JSONLexer lexer = parser.getLexer();
+        final JSONScanner lexer = parser.getLexer();
         if (lexer.token() == JSONToken.LITERAL_INT) {
             long longValue = lexer.longValue();
             lexer.nextToken(JSONToken.COMMA);

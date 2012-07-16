@@ -77,7 +77,7 @@ public class DefaultJSONParser extends AbstractJSONParser {
     private String                     dateFormatPattern = JSON.DEFFAULT_DATE_FORMAT;
     private DateFormat                 dateFormat;
 
-    protected final JSONLexer          lexer;
+    protected final JSONScanner          lexer;
 
     protected ParseContext             context;
 
@@ -150,7 +150,7 @@ public class DefaultJSONParser extends AbstractJSONParser {
         this(input, new JSONScanner(input, length, features), config);
     }
 
-    public DefaultJSONParser(final Object input, final JSONLexer lexer, final ParserConfig config){
+    public DefaultJSONParser(final Object input, final JSONScanner lexer, final ParserConfig config){
         this.lexer = lexer;
         this.input = input;
         this.config = config;
@@ -829,7 +829,7 @@ public class DefaultJSONParser extends AbstractJSONParser {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public final void parseArray(final Collection array, Object fieldName) {
-        final JSONLexer lexer = getLexer();
+        final JSONScanner lexer = getLexer();
 
         if (lexer.token() == JSONToken.SET || lexer.token() == JSONToken.TREE_SET) {
             lexer.nextToken();
@@ -1020,7 +1020,7 @@ public class DefaultJSONParser extends AbstractJSONParser {
     }
 
     public Object parse(Object fieldName) {
-        final JSONLexer lexer = getLexer();
+        final JSONScanner lexer = getLexer();
         switch (lexer.token()) {
             case SET:
                 lexer.nextToken();
@@ -1102,12 +1102,12 @@ public class DefaultJSONParser extends AbstractJSONParser {
         return getLexer().isEnabled(feature);
     }
 
-    public JSONLexer getLexer() {
+    public JSONScanner getLexer() {
         return lexer;
     }
 
     public final void accept(final int token) {
-        final JSONLexer lexer = getLexer();
+        final JSONScanner lexer = getLexer();
         if (lexer.token() == token) {
             lexer.nextToken();
         } else {
@@ -1117,7 +1117,7 @@ public class DefaultJSONParser extends AbstractJSONParser {
     }
 
     public void close() {
-        final JSONLexer lexer = getLexer();
+        final JSONScanner lexer = getLexer();
 
         try {
             if (isEnabled(Feature.AutoCloseSource)) {

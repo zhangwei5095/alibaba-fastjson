@@ -46,7 +46,7 @@ import com.alibaba.fastjson.util.Base64;
 /**
  * @author wenshao<szujobs@hotmail.com>
  */
-public class JSONScanner implements JSONLexer {
+public class JSONScanner {
 
     public final static byte                                EOI          = 0x1A;
 

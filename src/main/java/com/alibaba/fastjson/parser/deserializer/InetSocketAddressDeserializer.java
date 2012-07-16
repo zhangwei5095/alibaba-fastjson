@@ -6,7 +6,7 @@ import java.net.InetSocketAddress;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.parser.DefaultJSONParser;
-import com.alibaba.fastjson.parser.JSONLexer;
+import com.alibaba.fastjson.parser.JSONScanner;
 import com.alibaba.fastjson.parser.JSONToken;
 
 public class InetSocketAddressDeserializer implements ObjectDeserializer {
@@ -15,7 +15,7 @@ public class InetSocketAddressDeserializer implements ObjectDeserializer {
 
     @SuppressWarnings("unchecked")
     public <T> T deserialze(DefaultJSONParser parser, Type clazz, Object fieldName) {
-        JSONLexer lexer = parser.getLexer();
+        JSONScanner lexer = parser.getLexer();
 
         if (lexer.token() == JSONToken.NULL) {
             lexer.nextToken();

@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.parser.DefaultJSONParser;
-import com.alibaba.fastjson.parser.JSONLexer;
+import com.alibaba.fastjson.parser.JSONScanner;
 import com.alibaba.fastjson.parser.JSONToken;
 import com.alibaba.fastjson.util.TypeUtils;
 
@@ -15,7 +15,7 @@ public class ArrayDeserializer implements ObjectDeserializer {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> T deserialze(DefaultJSONParser parser, Type type, Object fieldName) {
-        final JSONLexer lexer = parser.getLexer();
+        final JSONScanner lexer = parser.getLexer();
         if (lexer.token() == JSONToken.NULL) {
             lexer.nextToken(JSONToken.COMMA);
             return null;

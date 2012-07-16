@@ -30,7 +30,7 @@ import java.util.Map;
 import com.alibaba.fastjson.parser.DefaultJSONParser;
 import com.alibaba.fastjson.parser.DefaultJSONParser.ResolveTask;
 import com.alibaba.fastjson.parser.Feature;
-import com.alibaba.fastjson.parser.JSONLexer;
+import com.alibaba.fastjson.parser.JSONScanner;
 import com.alibaba.fastjson.parser.JSONToken;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.parser.deserializer.FieldDeserializer;
@@ -296,7 +296,7 @@ public abstract class JSON implements JSONStreamAware, JSONAware {
 
         JSONArray array;
 
-        JSONLexer lexer = parser.getLexer();
+        JSONScanner lexer = parser.getLexer();
         if (lexer.token() == JSONToken.NULL) {
             lexer.nextToken();
             array = null;
@@ -322,7 +322,7 @@ public abstract class JSON implements JSONStreamAware, JSONAware {
         List<T> list;
 
         DefaultJSONParser parser = new DefaultJSONParser(text, ParserConfig.getGlobalInstance());
-        JSONLexer lexer = parser.getLexer();
+        JSONScanner lexer = parser.getLexer();
         if (lexer.token() == JSONToken.NULL) {
             lexer.nextToken();
             list = null;

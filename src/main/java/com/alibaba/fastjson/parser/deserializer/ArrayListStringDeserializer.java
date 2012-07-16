@@ -10,7 +10,7 @@ import java.util.Set;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.parser.DefaultJSONParser;
 import com.alibaba.fastjson.parser.Feature;
-import com.alibaba.fastjson.parser.JSONLexer;
+import com.alibaba.fastjson.parser.JSONScanner;
 import com.alibaba.fastjson.parser.JSONToken;
 
 public class ArrayListStringDeserializer implements ObjectDeserializer {
@@ -20,7 +20,7 @@ public class ArrayListStringDeserializer implements ObjectDeserializer {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> T deserialze(DefaultJSONParser parser, Type type, Object fieldName) {
 
-        final JSONLexer lexer = parser.getLexer();
+        final JSONScanner lexer = parser.getLexer();
         if (lexer.token() == JSONToken.NULL) {
             lexer.nextToken(JSONToken.COMMA);
             return null;
@@ -50,7 +50,7 @@ public class ArrayListStringDeserializer implements ObjectDeserializer {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void parseArray(DefaultJSONParser parser, Collection array) {
-        JSONLexer lexer = parser.getLexer();
+        JSONScanner lexer = parser.getLexer();
 
         if (lexer.token() == JSONToken.NULL) {
             lexer.nextToken(JSONToken.COMMA);

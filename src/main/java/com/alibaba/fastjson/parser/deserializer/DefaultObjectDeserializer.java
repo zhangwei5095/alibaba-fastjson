@@ -24,7 +24,6 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.parser.DefaultJSONParser;
 import com.alibaba.fastjson.parser.DefaultJSONParser.ResolveTask;
 import com.alibaba.fastjson.parser.Feature;
-import com.alibaba.fastjson.parser.JSONLexer;
 import com.alibaba.fastjson.parser.JSONScanner;
 import com.alibaba.fastjson.parser.JSONToken;
 import com.alibaba.fastjson.parser.ParseContext;
@@ -382,7 +381,7 @@ public class DefaultObjectDeserializer implements ObjectDeserializer {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public <T> T deserialze(DefaultJSONParser parser, ParameterizedType type, Object fieldName) {
         try {
-            JSONLexer lexer = parser.getLexer();
+            JSONScanner lexer = parser.getLexer();
             if (lexer.token() == JSONToken.NULL) {
                 lexer.nextToken();
                 return null;

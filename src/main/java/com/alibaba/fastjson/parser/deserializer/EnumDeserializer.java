@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.parser.DefaultJSONParser;
-import com.alibaba.fastjson.parser.JSONLexer;
+import com.alibaba.fastjson.parser.JSONScanner;
 import com.alibaba.fastjson.parser.JSONToken;
 
 @SuppressWarnings("rawtypes")
@@ -38,7 +38,7 @@ public class EnumDeserializer implements ObjectDeserializer {
     public <T> T deserialze(DefaultJSONParser parser, Type type, Object fieldName) {
         try {
             Object value;
-            final JSONLexer lexer = parser.getLexer();
+            final JSONScanner lexer = parser.getLexer();
             if (lexer.token() == JSONToken.LITERAL_INT) {
                 value = lexer.intValue();
                 lexer.nextToken(JSONToken.COMMA);
