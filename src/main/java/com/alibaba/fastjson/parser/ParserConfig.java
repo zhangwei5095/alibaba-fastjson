@@ -47,8 +47,6 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.atomic.AtomicIntegerArray;
-import java.util.concurrent.atomic.AtomicLongArray;
 import java.util.regex.Pattern;
 
 import com.alibaba.fastjson.JSONArray;
@@ -58,8 +56,6 @@ import com.alibaba.fastjson.parser.deserializer.ArrayListStringDeserializer;
 import com.alibaba.fastjson.parser.deserializer.ArrayListStringFieldDeserializer;
 import com.alibaba.fastjson.parser.deserializer.ArrayListTypeDeserializer;
 import com.alibaba.fastjson.parser.deserializer.ArrayListTypeFieldDeserializer;
-import com.alibaba.fastjson.parser.deserializer.AtomicIntegerArrayDeserializer;
-import com.alibaba.fastjson.parser.deserializer.AtomicLongArrayDeserializer;
 import com.alibaba.fastjson.parser.deserializer.AutowiredObjectDeserializer;
 import com.alibaba.fastjson.parser.deserializer.BigDecimalDeserializer;
 import com.alibaba.fastjson.parser.deserializer.BigIntegerDeserializer;
@@ -225,8 +221,6 @@ public class ParserConfig {
         derializers.put(Pattern.class, PatternDeserializer.instance);
         derializers.put(Charset.class, CharsetDeserializer.instance);
         derializers.put(Number.class, NumberDeserializer.instance);
-        derializers.put(AtomicIntegerArray.class, AtomicIntegerArrayDeserializer.instance);
-        derializers.put(AtomicLongArray.class, AtomicLongArrayDeserializer.instance);
         derializers.put(StackTraceElement.class, StackTraceElementDeserializer.instance);
 
         derializers.put(Serializable.class, defaultSerializer);

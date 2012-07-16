@@ -16,6 +16,7 @@
 package com.alibaba.fastjson.serializer;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 
 /**
@@ -31,8 +32,6 @@ public class ObjectArraySerializer implements ObjectSerializer {
     public final void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType) throws IOException {
         SerializeWriter out = serializer.getWriter();
 
-        Object[] array = (Object[]) object;
-        
         if (object == null) {
             if (out.isEnabled(SerializerFeature.WriteNullListAsEmpty)) {
                 out.write("[]");
@@ -42,11 +41,9 @@ public class ObjectArraySerializer implements ObjectSerializer {
             return;
         }
         
-        int size = array.length;
+        int size = Array.getLength(object);
 
-        int end = size - 1;
-
-        if (end == -1) {
+        if (size == 0) {
             out.append("[]");
             return;
         }
@@ -67,7 +64,8 @@ public class ObjectArraySerializer implements ObjectSerializer {
                         out.write(',');
                         serializer.println();
                     }
-                    serializer.write(array[i]);
+                    Object item = Array.get(object, i);
+                    serializer.writeWithFieldName(item, i);
                 }
                 serializer.decrementIdent();
                 serializer.println();
@@ -75,35 +73,30 @@ public class ObjectArraySerializer implements ObjectSerializer {
                 return;
             }
             
-            for (int i = 0; i < end; ++i) {
-                Object item = array[i];
+            for (int i = 0; i < size; ++i) {
+                Object item = Array.get(object, i);
+                
+                if (i != 0) {
+                    out.append(',');
+                }
     
                 if (item == null) {
-                    out.append("null,");
+                    out.append("null");
                 } else {
                     Class<?> clazz = item.getClass();
     
                     if (clazz == preClazz) {
-                        preWriter.write(serializer, item, null, null);
+                        preWriter.write(serializer, item, i, null);
                     } else {
                         preClazz = clazz;
                         preWriter = serializer.getObjectWriter(clazz);
     
-                        preWriter.write(serializer, item, null, null);
+                        preWriter.write(serializer, item, i, null);
                     }
-    
-                    out.append(',');
                 }
             }
     
-            Object item = array[end];
-    
-            if (item == null) {
-                out.append("null]");
-            } else {
-                serializer.write(item);
-                out.append(']');
-            }
+            out.append(']');
         } finally {
             serializer.setContext(context);
         }
