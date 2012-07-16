@@ -31,13 +31,13 @@ import java.util.Enumeration;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.TimeZone;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONAware;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONStreamAware;
-import com.alibaba.fastjson.util.ServiceLoader;
 
 /**
  * @author wenshao<szujobs@hotmail.com>
