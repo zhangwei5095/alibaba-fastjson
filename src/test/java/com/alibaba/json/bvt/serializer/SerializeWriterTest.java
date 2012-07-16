@@ -42,12 +42,7 @@ public class SerializeWriterTest extends TestCase {
         Assert.assertEquals("abc", out.toString());
         Assert.assertEquals(3, out.toCharArray().length);
         Assert.assertEquals(3, out.size());
-        out.reset();
-        Assert.assertEquals("", out.toString());
-        Assert.assertEquals(0, out.toCharArray().length);
-        Assert.assertEquals(0, out.size());
-        out.writeInt(Integer.MIN_VALUE);
-        Assert.assertEquals(Integer.toString(Integer.MIN_VALUE), out.toString());
+     
         out.flush();
         out.close();
     }
