@@ -195,11 +195,6 @@ public final class SerializeWriter extends Writer {
         out.write(bytes);
     }
 
-    public void writeTo(OutputStream out, Charset charset) throws IOException {
-        byte[] bytes = new String(buf, 0, count).getBytes(charset);
-        out.write(bytes);
-    }
-
     public SerializeWriter append(CharSequence csq) {
         String s = (csq == null ? "null" : csq.toString());
         write(s, 0, s.length());
