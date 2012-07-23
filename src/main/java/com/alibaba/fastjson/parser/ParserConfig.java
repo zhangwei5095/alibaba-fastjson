@@ -41,7 +41,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeMap;
@@ -57,7 +56,6 @@ import com.alibaba.fastjson.parser.deserializer.ArrayListStringDeserializer;
 import com.alibaba.fastjson.parser.deserializer.ArrayListStringFieldDeserializer;
 import com.alibaba.fastjson.parser.deserializer.ArrayListTypeDeserializer;
 import com.alibaba.fastjson.parser.deserializer.ArrayListTypeFieldDeserializer;
-import com.alibaba.fastjson.parser.deserializer.AutowiredObjectDeserializer;
 import com.alibaba.fastjson.parser.deserializer.BigDecimalDeserializer;
 import com.alibaba.fastjson.parser.deserializer.BigIntegerDeserializer;
 import com.alibaba.fastjson.parser.deserializer.BooleanDeserializer;
@@ -267,13 +265,6 @@ public class ParserConfig {
         derializer = derializers.get(clazz);
         if (derializer != null) {
             return derializer;
-        }
-
-        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        for (AutowiredObjectDeserializer autowired : ServiceLoader.load(AutowiredObjectDeserializer.class, classLoader)) {
-            for (Type forType : autowired.getAutowiredFor()) {
-                derializers.put(forType, autowired);
-            }
         }
 
         derializer = derializers.get(type);

@@ -30,7 +30,6 @@ import java.util.Enumeration;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.TimeZone;
 
 import com.alibaba.fastjson.JSON;
@@ -392,17 +391,6 @@ public class JSONSerializer {
 
     public ObjectSerializer getObjectWriter(Class<?> clazz) {
         ObjectSerializer writer = config.get(clazz);
-
-        if (writer == null) {
-            final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            for (AutowiredObjectSerializer autowired : ServiceLoader.load(AutowiredObjectSerializer.class, classLoader)) {
-                for (Type forType : autowired.getAutowiredFor()) {
-                    config.put(forType, autowired);
-                }
-            }
-
-            writer = config.get(clazz);
-        }
 
         if (writer == null) {
             if (Map.class.isAssignableFrom(clazz)) {
