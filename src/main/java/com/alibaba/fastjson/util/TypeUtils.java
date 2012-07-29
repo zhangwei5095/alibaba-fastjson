@@ -242,7 +242,7 @@ public class TypeUtils {
                 } else {
                     format = "yyyy-MM-dd HH:mm:ss.SSS";
                 }
-                
+
                 SimpleDateFormat dateFormat = new SimpleDateFormat(format);
                 try {
                     return (Date) dateFormat.parse(strVal);
@@ -993,5 +993,17 @@ public class TypeUtils {
         }
 
         return false;
+    }
+
+    public static Class<?> getClass(Type type) {
+        if (type.getClass() == Class.class) {
+            return (Class<?>) type;
+        }
+
+        if (type instanceof ParameterizedType) {
+            return getClass(((ParameterizedType) type).getRawType());
+        }
+
+        return Object.class;
     }
 }

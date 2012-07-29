@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.Inet4Address;
@@ -250,7 +252,11 @@ public class ParserConfig {
 
         if (type instanceof ParameterizedType) {
             Type rawType = ((ParameterizedType) type).getRawType();
-            return getDeserializer(rawType);
+            if (rawType instanceof Class<?>) {
+                return getDeserializer((Class<?>) rawType, type);
+            } else {
+                return getDeserializer(rawType);
+            }
         }
 
         return this.defaultSerializer;
@@ -262,12 +268,19 @@ public class ParserConfig {
             return derializer;
         }
 
-        derializer = derializers.get(clazz);
+        if (type == null) {
+            type = clazz;
+        }
+
+        derializer = derializers.get(type);
         if (derializer != null) {
             return derializer;
         }
 
-        derializer = derializers.get(type);
+        if (type instanceof WildcardType || type instanceof TypeVariable) {
+            derializer = derializers.get(clazz);
+        }
+
         if (derializer != null) {
             return derializer;
         }
@@ -295,20 +308,24 @@ public class ParserConfig {
         } else if (Throwable.class.isAssignableFrom(clazz)) {
             derializer = new ThrowableDeserializer(this, clazz);
         } else {
-            derializer = createJavaBeanDeserializer(clazz);
+            derializer = createJavaBeanDeserializer(clazz, type);
         }
 
         putDeserializer(type, derializer);
 
         return derializer;
     }
-
+    
     public ObjectDeserializer createJavaBeanDeserializer(Class<?> clazz) {
+        return createJavaBeanDeserializer(clazz, clazz);
+    }
+
+    public ObjectDeserializer createJavaBeanDeserializer(Class<?> clazz, Type type) {
         if (clazz == Class.class) {
             return this.defaultSerializer;
         }
 
-        return new JavaBeanDeserializer(this, clazz);
+        return new JavaBeanDeserializer(this, clazz, type);
     }
 
     public FieldDeserializer createFieldDeserializer(ParserConfig mapping, Class<?> clazz, FieldInfo fieldInfo) {
