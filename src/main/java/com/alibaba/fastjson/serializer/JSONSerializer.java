@@ -423,14 +423,18 @@ public class JSONSerializer {
                 config.put(clazz, CalendarSerializer.instance);
             } else {
                 boolean isCglibProxy = false;
+                boolean isJavassistProxy = false;
                 for (Class<?> item : clazz.getInterfaces()) {
                     if (item.getName().equals("net.sf.cglib.proxy.Factory")) {
                         isCglibProxy = true;
                         break;
+                    } else if (item.getName().equals("javassist.util.proxy.ProxyObject")) {
+                        isJavassistProxy = true;
+                        break;
                     }
                 }
                 
-                if (isCglibProxy) {
+                if (isCglibProxy || isJavassistProxy) {
                     Class<?> superClazz = clazz.getSuperclass();
                     
                     ObjectSerializer superWriter = getObjectWriter(superClazz);
