@@ -277,7 +277,7 @@ public class ParserConfig {
             return derializer;
         }
 
-        if (type instanceof WildcardType || type instanceof TypeVariable) {
+        if (type instanceof WildcardType || type instanceof TypeVariable || type instanceof ParameterizedType) {
             derializer = derializers.get(clazz);
         }
 

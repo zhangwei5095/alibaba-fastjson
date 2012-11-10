@@ -124,6 +124,9 @@ public class FieldInfo implements Comparable<FieldInfo> {
         GenericDeclaration gd = tv.getGenericDeclaration();
         do {
             type = clazz.getGenericSuperclass();
+            if (type == null) {
+                return null;
+            }
             if (type instanceof ParameterizedType) {
                 ParameterizedType ptype = (ParameterizedType) type;
                 if (ptype.getRawType() == gd) {
