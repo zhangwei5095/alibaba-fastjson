@@ -19,7 +19,8 @@ public class JSONSerializerTest2 extends TestCase {
         serializer.config(SerializerFeature.WriteEnumUsingToString, false);
         serializer.write(Type.A);
 
-        Assert.assertTrue(size < serializer.getMapping().size());
+        Assert.assertTrue("size " + size + ", mappingSize " + serializer.getMapping().size(), 
+        		size <= serializer.getMapping().size());
 
         Assert.assertEquals(Integer.toString(Type.A.ordinal()), serializer.getWriter().toString());
     }
