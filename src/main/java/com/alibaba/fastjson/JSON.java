@@ -72,7 +72,7 @@ public abstract class JSON implements JSONStreamAware, JSONAware {
         features |= com.alibaba.fastjson.serializer.SerializerFeature.WriteEnumUsingToString.getMask();
         features |= com.alibaba.fastjson.serializer.SerializerFeature.SortField.getMask();
         // features |= com.alibaba.fastjson.serializer.SerializerFeature.WriteTabAsSpecial.getMask();
-        // features |= com.alibaba.fastjson.serializer.SerializerFeature.WriteSlashAsSpecial.getMask();
+        features |= com.alibaba.fastjson.serializer.SerializerFeature.WriteSlashAsSpecial.getMask();
         DEFAULT_GENERATE_FEATURE = features;
     }
 
@@ -601,5 +601,5 @@ public abstract class JSON implements JSONStreamAware, JSONAware {
         return TypeUtils.cast(json, clazz, ParserConfig.getGlobalInstance());
     }
     
-    public final static String VERSION = "1.1.25";
+    public final static String VERSION = "1.1.27";
 }
