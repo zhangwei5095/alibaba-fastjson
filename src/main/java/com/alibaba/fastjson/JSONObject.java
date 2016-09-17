@@ -106,6 +106,10 @@ public class JSONObject extends JSON implements Map<String, Object>, Cloneable, 
             return (JSONObject) value;
         }
 
+        if (value instanceof String) {
+            return JSON.parseObject((String) value);
+        }
+
         return (JSONObject) toJSON(value);
     }
 
@@ -114,6 +118,10 @@ public class JSONObject extends JSON implements Map<String, Object>, Cloneable, 
 
         if (value instanceof JSONArray) {
             return (JSONArray) value;
+        }
+
+        if (value instanceof String) {
+            return (JSONArray) JSON.parse((String) value);
         }
 
         return (JSONArray) toJSON(value);
@@ -167,7 +175,7 @@ public class JSONObject extends JSON implements Map<String, Object>, Cloneable, 
             return 0;
         }
 
-        return castToByte(value).byteValue();
+        return castToByte(value).byteValue(); // TODO 如果 value 是""、"null"或"NULL"，可能会存在报空指针的情况，是否需要加以处理？ 其他转换也存在类似情况
     }
 
     public Short getShort(String key) {
@@ -293,17 +301,37 @@ public class JSONObject extends JSON implements Map<String, Object>, Cloneable, 
     public Object put(String key, Object value) {
         return map.put(key, value);
     }
+    
+    public JSONObject fluentPut(String key, Object value) {
+        map.put(key, value);
+        return this;
+    }
 
     public void putAll(Map<? extends String, ? extends Object> m) {
         map.putAll(m);
+    }
+
+    public JSONObject fluentPutAll(Map<? extends String, ? extends Object> m) {
+        map.putAll(m);
+        return this;
     }
 
     public void clear() {
         map.clear();
     }
 
+    public JSONObject fluentClear() {
+        map.clear();
+        return this;
+    }
+
     public Object remove(Object key) {
         return map.remove(key);
+    }
+
+    public JSONObject fluentRemove(Object key) {
+        map.remove(key);
+        return this;
     }
 
     public Set<String> keySet() {

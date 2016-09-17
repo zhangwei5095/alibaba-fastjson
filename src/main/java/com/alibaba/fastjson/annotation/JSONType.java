@@ -19,6 +19,9 @@ public @interface JSONType {
 
     String[] orders() default {};
 
+    /**
+     * @since 1.2.6
+     */
     String[] includes() default {};
 
     String[] ignores() default {};
@@ -29,4 +32,26 @@ public @interface JSONType {
     boolean alphabetic() default true;
     
     Class<?> mappingTo() default Void.class;
+    
+    Class<?> builder() default Void.class;
+    
+    /**
+     * @since 1.2.11
+     */
+    String typeName() default "";
+    
+    /**
+     * @since 1.2.11
+     */
+    Class<?>[] seeAlso() default{};
+    
+    /**
+     * @since 1.2.14
+     */
+    Class<?> serializer() default Void.class;
+    
+    /**
+     * @since 1.2.14
+     */
+    Class<?> deserializer() default Void.class;
 }
